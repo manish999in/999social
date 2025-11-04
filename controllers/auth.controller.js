@@ -114,3 +114,53 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 };
+
+
+// Get current user info
+export const getCurrentUser = async (req, res) => {
+  try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "Unauthorized or invalid token" });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({
+      message: "User fetched successfully",
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch user", error: error.message });
+  }
+};
+
+
+// Update current user profile
+export const updateProfile = async (req, res) => {
+  try {
+    const updates = req.body;
+
+    const user = await User.findByIdAndUpdate(req.user.id, updates, { new: true });
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+    console.log("🔹 Update body:", req.body);
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        age: user.age,
+        gender: user.gender,
+        bio: user.bio,
+        location: user.location,
+        profilePic: user.profilePic,
+        coverPic: user.coverPic,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update profile", error: error.message });
+  }
+};

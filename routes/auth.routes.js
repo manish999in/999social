@@ -7,6 +7,7 @@ const router = express.Router();
 // multer setup (for local temp storage before Cloudinary)
 const upload = multer({ dest: "uploads/" });
 import { verifyToken } from "../middlewares/auth.middleware.js";
+import { getCurrentUser, updateProfile } from "../controllers/auth.controller.js";
 
 
 // ✅ Signup route
@@ -21,6 +22,13 @@ router.post(
 
 // ✅ Login route
 router.post("/login", loginUser);
+
+
+// Get current logged-in user
+router.get("/me", verifyToken, getCurrentUser);
+
+// Update current user profile
+router.put("/me", verifyToken, updateProfile);
 
 
 router.get("/profile", verifyToken, async (req, res) => {
