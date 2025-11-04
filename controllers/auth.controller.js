@@ -107,6 +107,8 @@ export const loginUser = async (req, res) => {
     location: user.location,
     profilePic: user.profilePic,
     coverPic: user.coverPic,
+    followers: user.followers, // populated if needed
+    following: user.following, // populated if needed
   },
 });
 

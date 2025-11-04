@@ -1,21 +1,21 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true },
+    profilePic: { type: String, default: "" },
+    coverPic: { type: String, default: "" },
+    bio: { type: String, default: "" },
     age: { type: Number },
     gender: { type: String },
-    bio: { type: String, default: "" },
-    location: { type: String, default: "" },
-    profilePic: { type: String, default: "" }, // Cloudinary URL placeholder
-    coverPic: { type: String, default: "" },   // optional cover photo
+    location: { type: String },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // added
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // added
   },
   { timestamps: true }
 );
 
-// Nodemon reload safe
-const User = mongoose.models.User || mongoose.model("User", userSchema);
-export default User;
+export default mongoose.model("User", UserSchema);

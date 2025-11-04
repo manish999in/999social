@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Social Media API — Routes</title>
+  <style>
+    :root{font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;}
+    body{background:#f6f8fb;color:#0f172a;margin:24px}
+    .container{max-width:1100px;margin:0 auto;background:#fff;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(2,6,23,0.08)}
+    h1{font-size:20px;margin:0 0 12px}
+    p.lead{color:#475569;margin:0 0 18px}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    thead th{background:#0ea5a4;color:#fff;padding:10px 12px;text-align:left;font-weight:600;border-top-left-radius:8px}
+    thead th:last-child{border-top-right-radius:8px}
+    tbody td{padding:12px;border-bottom:1px solid #eef2f7;font-size:14px;color:#0f172a}
+    tbody tr:hover{background:#fbfeff}
+    .method{display:inline-block;padding:6px 8px;border-radius:6px;color:#fff;font-weight:700;font-size:12px}
+    .GET{background:#10b981}
+    .POST{background:#3b82f6}
+    .PUT{background:#f59e0b}
+    .DELETE{background:#ef4444}
+    .note{font-size:13px;color:#64748b;margin-top:10px}
+    .small{font-size:12px;color:#94a3b8}
+    .badge{background:#eef2f7;color:#0f172a;padding:4px 8px;border-radius:6px;font-weight:600}
+    @media (max-width:800px){table,thead,tbody,th,td,tr{display:block} thead{display:none} tbody td{border:none;padding:10px 8px} tbody td:before{content:attr(data-label);display:block;font-weight:600;color:#334155;margin-bottom:6px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Social Media API — Routes</h1>
+    <p class="lead">Table of endpoints for your backend. Copy/paste URLs into Postman and remember to add <span class="badge">Authorization: Bearer &lt;token&gt;</span> for protected routes.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Endpoint</th>
+          <th>Auth</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Method"><span class="method POST">POST</span></td>
+          <td data-label="Endpoint">/api/auth/signup</td>
+          <td data-label="Auth">No (multipart/form-data for files)</td>
+          <td data-label="Description">Register new user (profilePic & coverPic optional)</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method POST">POST</span></td>
+          <td data-label="Endpoint">/api/auth/login</td>
+          <td data-label="Auth">No</td>
+          <td data-label="Description">Login (returns JWT token)</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method GET">GET</span></td>
+          <td data-label="Endpoint">/api/auth/me</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Get current logged-in user</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method PUT">PUT</span></td>
+          <td data-label="Endpoint">/api/auth/me</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Update current user profile (form-data allowed)</td>
+        </tr>
+
+        <tr>
+          <td data-label="Method"><span class="method POST">POST</span></td>
+          <td data-label="Endpoint">/api/posts</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Create post (form-data: content, description, tags, location, image)</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method GET">GET</span></td>
+          <td data-label="Endpoint">/api/posts?page=1&limit=10</td>
+          <td data-label="Auth">No (public)</td>
+          <td data-label="Description">Get paginated feed (newest first)</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method GET">GET</span></td>
+          <td data-label="Endpoint">/api/posts/:id</td>
+          <td data-label="Auth">No</td>
+          <td data-label="Description">Get single post by ID</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method GET">GET</span></td>
+          <td data-label="Endpoint">/api/posts/user/:id</td>
+          <td data-label="Auth">No</td>
+          <td data-label="Description">Get posts by a specific user</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method PUT">PUT</span></td>
+          <td data-label="Endpoint">/api/posts/:id</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Update post (owner only). form-data allowed to replace image</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method DELETE">DELETE</span></td>
+          <td data-label="Endpoint">/api/posts/:id</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Delete a post (owner only)</td>
+        </tr>
+
+        <tr>
+          <td data-label="Method"><span class="method POST">POST</span></td>
+          <td data-label="Endpoint">/api/posts/:id/like</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Toggle like/unlike on a post</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method POST">POST</span></td>
+          <td data-label="Endpoint">/api/posts/:id/comment</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Add comment (body: { text })</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method DELETE">DELETE</span></td>
+          <td data-label="Endpoint">/api/posts/:id/comment/:commentId</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Delete comment (comment owner or post owner)</td>
+        </tr>
+
+        <tr>
+          <td data-label="Method"><span class="method POST">POST</span></td>
+          <td data-label="Endpoint">/api/users/:id/follow</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Follow / Unfollow a user</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method GET">GET</span></td>
+          <td data-label="Endpoint">/api/users/:id/followers</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Get followers of a user</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method GET">GET</span></td>
+          <td data-label="Endpoint">/api/users/:id/following</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Get who the user is following</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method GET">GET</span></td>
+          <td data-label="Endpoint">/api/users/</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Get all users (for follow suggestions)</td>
+        </tr>
+
+        <tr>
+          <td data-label="Method"><span class="method GET">GET</span></td>
+          <td data-label="Endpoint">/api/notifications</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Fetch notifications for current user</td>
+        </tr>
+        <tr>
+          <td data-label="Method"><span class="method PUT">PUT</span></td>
+          <td data-label="Endpoint">/api/notifications/:id/read</td>
+          <td data-label="Auth">Yes</td>
+          <td data-label="Description">Mark notification as read</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <p class="note">Tip: For protected routes, set request header <code>Authorization: Bearer &lt;token&gt;</code>. For file uploads use <strong>form-data</strong> in Postman and set file field name to <code>image</code> (for posts) or <code>profilePic</code>/<code>coverPic</code> (for signup).</p>
+  </div>
+</body>
+</html>
