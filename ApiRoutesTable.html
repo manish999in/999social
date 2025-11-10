@@ -24,6 +24,7 @@
     .small{font-size:12px;color:#94a3b8}
     .badge{background:#eef2f7;color:#0f172a;padding:4px 8px;border-radius:6px;font-weight:600}
     @media (max-width:800px){table,thead,tbody,th,td,tr{display:block} thead{display:none} tbody td{border:none;padding:10px 8px} tbody td:before{content:attr(data-label);display:block;font-weight:600;color:#334155;margin-bottom:6px}}
+    .params{font-size:12px;color:#334155;margin-top:4px;}
   </style>
 </head>
 <body>
@@ -44,14 +45,22 @@
         <tr>
           <td data-label="Method"><span class="method POST">POST</span></td>
           <td data-label="Endpoint">/api/auth/signup</td>
-          <td data-label="Auth">No (multipart/form-data for files)</td>
-          <td data-label="Description">Register new user (profilePic & coverPic optional)</td>
+          <td data-label="Auth">No (multipart/form-data)</td>
+          <td data-label="Description">
+            Register new user (profilePic & coverPic optional)
+            <div class="params">
+              Fields: name, username, email, password, age (optional), gender (optional), bio (optional), profilePic (file, optional), coverPic (file, optional)
+            </div>
+          </td>
         </tr>
         <tr>
           <td data-label="Method"><span class="method POST">POST</span></td>
           <td data-label="Endpoint">/api/auth/login</td>
           <td data-label="Auth">No</td>
-          <td data-label="Description">Login (returns JWT token)</td>
+          <td data-label="Description">
+            Login (returns JWT token)
+            <div class="params">JSON: { "username": "string", "password": "string" }</div>
+          </td>
         </tr>
         <tr>
           <td data-label="Method"><span class="method GET">GET</span></td>
@@ -63,19 +72,25 @@
           <td data-label="Method"><span class="method PUT">PUT</span></td>
           <td data-label="Endpoint">/api/auth/me</td>
           <td data-label="Auth">Yes</td>
-          <td data-label="Description">Update current user profile (form-data allowed)</td>
+          <td data-label="Description">
+            Update current user profile
+            <div class="params">Fields: any of name, username, email, password, age, gender, bio, profilePic (file), coverPic (file)</div>
+          </td>
         </tr>
 
         <tr>
           <td data-label="Method"><span class="method POST">POST</span></td>
           <td data-label="Endpoint">/api/posts</td>
           <td data-label="Auth">Yes</td>
-          <td data-label="Description">Create post (form-data: content, description, tags, location, image)</td>
+          <td data-label="Description">
+            Create post
+            <div class="params">Form-data: content, description (optional), tags (array, optional), location (optional), image (file, optional)</div>
+          </td>
         </tr>
         <tr>
           <td data-label="Method"><span class="method GET">GET</span></td>
           <td data-label="Endpoint">/api/posts?page=1&limit=10</td>
-          <td data-label="Auth">No (public)</td>
+          <td data-label="Auth">No</td>
           <td data-label="Description">Get paginated feed (newest first)</td>
         </tr>
         <tr>
@@ -94,7 +109,10 @@
           <td data-label="Method"><span class="method PUT">PUT</span></td>
           <td data-label="Endpoint">/api/posts/:id</td>
           <td data-label="Auth">Yes</td>
-          <td data-label="Description">Update post (owner only). form-data allowed to replace image</td>
+          <td data-label="Description">
+            Update post (owner only)
+            <div class="params">Form-data: any of content, description, tags, location, image (file)</div>
+          </td>
         </tr>
         <tr>
           <td data-label="Method"><span class="method DELETE">DELETE</span></td>
@@ -113,7 +131,10 @@
           <td data-label="Method"><span class="method POST">POST</span></td>
           <td data-label="Endpoint">/api/posts/:id/comment</td>
           <td data-label="Auth">Yes</td>
-          <td data-label="Description">Add comment (body: { text })</td>
+          <td data-label="Description">
+            Add comment
+            <div class="params">JSON: { "text": "string" }</div>
+          </td>
         </tr>
         <tr>
           <td data-label="Method"><span class="method DELETE">DELETE</span></td>
@@ -163,7 +184,10 @@
       </tbody>
     </table>
 
-    <p class="note">Tip: For protected routes, set request header <code>Authorization: Bearer &lt;token&gt;</code>. For file uploads use <strong>form-data</strong> in Postman and set file field name to <code>image</code> (for posts) or <code>profilePic</code>/<code>coverPic</code> (for signup).</p>
+    <p class="note">
+      Tip: For protected routes, set request header <code>Authorization: Bearer &lt;token&gt;</code>. 
+      For file uploads use <strong>form-data</strong> in Postman and set file field name to <code>image</code> (for posts) or <code>profilePic</code>/<code>coverPic</code> (for signup).
+    </p>
   </div>
 </body>
 </html>
