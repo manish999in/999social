@@ -125,26 +125,32 @@ export const getCurrentUser = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized or invalid token" });
     }
 
-    const user = await User.findById(req.user.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    // ✅ Fetch full user document
+    const user = await User.findById(req.user.id).select("-passwordHash");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     res.status(200).json({
       message: "User fetched successfully",
       user,
     });
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch user", error: error.message });
+    console.error("❌ Error in getCurrentUser:", error);
+    res
+      .status(500)
+      .json({ message: "Failed to fetch user", error: error.message });
   }
 };
 
 
+
 // Update current user profile
+
 export const updateProfile = async (req, res) => {
   try {
     const updates = req.body;
-
     const user = await User.findByIdAndUpdate(req.user.id, updates, { new: true });
-
     if (!user) return res.status(404).json({ message: "User not found" });
     console.log("🔹 Update body:", req.body);
 
@@ -166,3 +172,6 @@ export const updateProfile = async (req, res) => {
     res.status(500).json({ message: "Failed to update profile", error: error.message });
   }
 };
+ 
+ 
+ 
