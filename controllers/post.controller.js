@@ -104,7 +104,7 @@ export const getAllPosts = async (req, res) => {
       { $sample: { size: limit } }, // random shuffle
       { $skip: skip },
       { $limit: limit }
-    ]);
+    ]); 
 
     // Re-populate user + comments.user
     await Post.populate(posts, [
