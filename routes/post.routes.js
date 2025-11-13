@@ -22,7 +22,7 @@ const upload = multer({ dest: "uploads/" });
 router.post("/", verifyToken, upload.single("image"), createPost);
 
 // Get feed
-router.get("/", getAllPosts);
+router.get("/", getAllPosts); 
 
 // Get posts by user (must come before :id route)
 router.get("/user/:id", getPostsByUser);

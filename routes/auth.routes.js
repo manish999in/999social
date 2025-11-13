@@ -31,8 +31,13 @@ router.get("/me", verifyToken, getCurrentUser);
 router.put("/me", verifyToken, updateProfile);
 
 
-router.get("/profile", verifyToken, async (req, res) => {
-  res.json({ message: "Access granted ✅", user: req.user });
+// Logout route
+router.post("/logout", verifyToken, async (req, res) => {
+  try {
+    res.status(200).json({ message: "User logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Logout failed", error: error.message });
+  }
 });
 
 

@@ -93,24 +93,31 @@ export const deletePost = async (req, res) => {
 };
 
 // Get all posts
+// Get all posts (Shuffled)
 export const getAllPosts = async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page || "1"));
-    const limit = Math.min(50, parseInt(req.query.limit || "10"));
+    const limit = Math.min(50, parseInt(req.query.limit || "50"));
     const skip = (page - 1) * limit;
 
-    const posts = await Post.find()
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .populate("user", "username profilePic")
-      .populate("comments.user", "username profilePic");
+    const posts = await Post.aggregate([
+      { $sample: { size: limit } }, // random shuffle
+      { $skip: skip },
+      { $limit: limit }
+    ]);
 
-    res.status(200).json({ message: "Posts fetched", page, limit, posts });
+    // Re-populate user + comments.user
+    await Post.populate(posts, [
+      { path: "user", select: "username profilePic" },
+      { path: "comments.user", select: "username profilePic" }
+    ]);
+
+    res.status(200).json({ message: "Shuffled posts fetched", page, limit, posts });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch posts", error: error.message });
   }
 };
+
 
 // Get single post
 export const getPostById = async (req, res) => {
@@ -124,7 +131,7 @@ export const getPostById = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch post", error: error.message });
   }
 };
-
+ 
 // Get posts by user
 export const getPostsByUser = async (req, res) => {
   try {
